@@ -1,3 +1,8 @@
+from string import Template
+
+import utils
+
+
 def validate(data):
     if not isinstance(data, dict):
         return False
@@ -16,3 +21,16 @@ def validate(data):
         if type(node["refs"]) not in (tuple, list):
             return False
     return True
+
+def createDotGraph(data):
+    dotGraph = dict()
+    for name in data:
+        node = data[name]
+        dotNode = dict()
+        dotNode["name"] = name
+        dotNode["label"] = Template(node["label"]).substitute(
+            **(utils.removeWhitespacesInDictValues(node["fields"])))
+        dotNode["refs"] = node["refs"]
+        dotGraph[name] = dotNode
+    return dotGraph
+
