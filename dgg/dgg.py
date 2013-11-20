@@ -34,3 +34,7 @@ def createDotGraph(data):
         dotGraph[name] = dotNode
     return dotGraph
 
+def createDotText(filename, graph):
+    text = None
+    with file(filename, "w") as f:
+        print >>f, text
