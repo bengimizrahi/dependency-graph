@@ -36,7 +36,19 @@ class TestDot(unittest.TestCase):
         self.assertTrue(dgg.validate(self.data))
 
     def test_createDotGraph(self):
-        self.assertIsNotNone(dgg.createDotGraph(self.data))
+        self.assertEqual(dgg.createDotGraph(self.data),
+            {
+                '1': {
+                    'refs': ['2'],
+                    'name': '1',
+                    'label': '1-field1|{1-field2|1-field3|1-field4}|1-field5'
+                },
+                '2': {
+                    'refs': ['1'],
+                    'name': '2',
+                    'label': '2-field1|{2-field2|2-field3|2-field4}|2-field5'
+                },
+            })
 
 
 class TestUtils(unittest.TestCase):
