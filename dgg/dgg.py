@@ -22,14 +22,14 @@ def validate(data):
             return False
     return True
 
-def createDotGraph(data):
+def createDotGraph(data, columnWidth=25):
     dotGraph = dict()
     for name in data:
         node = data[name]
         dotNode = dict()
         dotNode["name"] = name
         dotNode["label"] = Template(node["label"]).substitute(
-            **(utils.removeWhitespacesInDictValues(node["fields"])))
+            **(utils.removeWhitespacesAndColumnizeDictValues(node["fields"], columnWidth)))
         dotNode["refs"] = node["refs"]
         dotGraph[name] = dotNode
     return dotGraph

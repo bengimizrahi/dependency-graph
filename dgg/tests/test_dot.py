@@ -46,10 +46,10 @@ class TestUtils(unittest.TestCase):
         cleanText = utils.removeWhitespaces(text)
         self.assertEqual(cleanText.count(' '), 6)
 
-    def test_removeWhiteSpacesInDictValues(self):
+    def test_removeWhitespacesAndColumnizeDictValues(self):
         data = {"f1": "    a b  c\nd   \ne\n   f   \n   g    "}
-        newData = utils.removeWhitespacesInDictValues(data)
-        self.assertEqual(newData["f1"].count(' '), 6)
+        newData = utils.removeWhitespacesAndColumnizeDictValues(data, 4)
+        self.assertEqual(newData["f1"].count('\n'), 3)
 
 
 if __name__ == "__main__":
