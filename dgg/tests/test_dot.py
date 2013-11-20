@@ -1,37 +1,55 @@
 import unittest
 
-from dgg import dgg
+from dgg import dgg, utils
+
 
 class TestDot(unittest.TestCase):
 
-    def test_validate(self):
-        data = {
-            "1": {
-                "label": "$f1|{$f2|$f3|$f4}|$f5",
-                "fields": {
-                    "f1": "1-field1",
-                    "f2": "1-field2",
-                    "f3": "1-field3",
-                    "f4": "1-field4",
-                    "f5": "1-field5",
-                },
-                "refs": ["2"],
-                "backrefs": [],
+    data = {
+        "1": {
+            "label": "$f1|{$f2|$f3|$f4}|$f5",
+            "fields": {
+                "f1": "1-field1",
+                "f2": "1-field2",
+                "f3": "1-field3",
+                "f4": "1-field4",
+                "f5": "1-field5",
             },
-            "2": {
-                "label": "$f1|{$f2|$f3|$f4}|$f5",
-                "fields": {
-                    "f1": "2-field1",
-                    "f2": "2-field2",
-                    "f3": "2-field3",
-                    "f4": "2-field4",
-                    "f5": "2-field5",
-                },
-                "refs": ["1"],
-                "backrefs": [],
-            }
+            "refs": ["2"],
+            "backrefs": [],
+        },
+        "2": {
+            "label": "$f1|{$f2|$f3|$f4}|$f5",
+            "fields": {
+                "f1": "2-field1",
+                "f2": "2-field2",
+                "f3": "2-field3",
+                "f4": "2-field4",
+                "f5": "2-field5",
+            },
+            "refs": ["1"],
+            "backrefs": [],
         }
-        self.assertTrue(dgg.validate(data))
+    }
+
+    def test_validate(self):
+        self.assertTrue(dgg.validate(self.data))
+
+    def test_createDotGraph(self):
+        self.assertIsNotNone(dgg.createDotGraph(self.data))
+
+
+class TestUtils(unittest.TestCase):
+
+    def test_removeWhiteSpaces(self):
+        text = "    a b  c\nd   \ne\n   f   \n   g    "
+        cleanText = utils.removeWhitespaces(text)
+        self.assertEqual(cleanText.count(' '), 6)
+
+    def test_removeWhiteSpacesInDictValues(self):
+        data = {"f1": "    a b  c\nd   \ne\n   f   \n   g    "}
+        newData = utils.removeWhitespacesInDictValues(data)
+        self.assertEqual(newData["f1"].count(' '), 6)
 
 
 if __name__ == "__main__":
