@@ -36,7 +36,14 @@ def createDotGraph(data, columnWidth=25):
         dotGraph[name] = dotNode
     return dotGraph
 
-def createDotText(filename, graph):
-    text = None
-    with file(filename, "w") as f:
-        print >>f, text
+def createDotText(filename, dotGraph):
+    textSnippetForNodes = "\n".join(('%s [label="%s"];' % (n["name"], n["label"])
+        for n in dotGraph.itervalues()))
+    textSnippetForEdges = "\n".join(('%s -> %s;' % (n["name"],t) for n in dotGraph.itervalues() for t in n["refs"]))
+    template = """digraph {
+node [shape=record];
+%s
+%s
+};"""
+    with file("{}.gv".format(filename), "w") as f:
+        print >>f, template % (textSnippetForNodes, textSnippetForEdges)
