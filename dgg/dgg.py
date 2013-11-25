@@ -6,6 +6,8 @@ import utils
 def validate(data):
     if not isinstance(data, dict):
         return False
+    if any((n.isdigit() for n in data)):
+        return False
     for node in data.itervalues():
         if not isinstance(node, dict):
             return False
